@@ -22,22 +22,49 @@ var generator = {
   },
 };
 
+var execTimers = [];
+execTimers.itemAVG = () => {
+  var sum = 0;
+  execTimers.forEach(item => {
+    sum += item.time;
+  });
+  return sum / execTimers.length;
+};
+class execItem {
+  constructor(name) {
+    this.txt = name;
+    this.start = Date.now();
+  }
+  end() {
+    this.end = Date.now();
+    this.time = this.end - this.start;
+    execTimers.push(this);
+  }
+}
+
+
+
 main = async () => {
   await users.purge();
   await posts.purge();
 
   for (let i = 0; i < item_count; i++) {
-    console.time("user #" + i);
+    let item = new execItem(`user_${i}`);
     await users.new(await generator.newUser());
-    console.timeEnd("user #" + i);
+    item.end();
   }
 
   for (let i = 0; i < item_count; i++) {
-    console.time("post #" + i);
+    let item = new execItem(`post_${i}`);
     await posts.new(await generator.newPost());
-    console.timeEnd("post #" + i);
+    item.end();
   }
 
+  console.log(execTimers);
+  console.log(`execTimers.itemAVG: ${execTimers.itemAVG()}ms`);
+
+  await users.purge();
+  await posts.purge();
 };
 
 main();
