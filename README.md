@@ -14,4 +14,8 @@ NOTE: Jest looks like making an overhead and using up to 75% more execution time
       Total   : 8.869 s
       Per item: 4.4345 ms
 
+    Originally:
+    No Jest   : ./tryout_02.js
+      Total   : 11.506 s
+      Per item: 5.753 ms
 #
