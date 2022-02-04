@@ -1,5 +1,5 @@
 const { users, posts } = require('./models');
-const generator = require('./generator');
+const generator = require('./helpers/generator');
 //! Test Configs:
 const item_count = 1000;
 
