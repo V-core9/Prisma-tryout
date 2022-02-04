@@ -3,8 +3,13 @@ const generator = require('./helpers/generator');
 //! Test Configs:
 const item_count = 1000;
 
-var execTimers = [];
+vLoop = async (count, callback) => {
+  for (let i = 0; i < count; i++) {
+    await callback(i);
+  }
+};
 
+var execTimers = [];
 execTimers.sum = () => {
   var sum = 0;
   execTimers.forEach(item => {
@@ -12,11 +17,9 @@ execTimers.sum = () => {
   });
   return sum;
 };
-
 execTimers.itemAVG = () => {
   return execTimers.sum() / execTimers.length;
 };
-
 execTimers.seconds = () => {
   return execTimers.sum() / 1000;
 };
@@ -33,27 +36,26 @@ class execItem {
   }
 }
 
+newUserCB = async (i) => {
+  let item = new execItem(`user_${i}`);
+  await users.new(await generator.newUser());
+  item.end();
+};
+
+newPostCB = async (i) => {
+  let item = new execItem(`post_${i}`);
+  await posts.new(await generator.newPost());
+  item.end();
+};
 
 main = async () => {
   await users.purge();
   await posts.purge();
-
-  for (let i = 0; i < item_count; i++) {
-    let item = new execItem(`user_${i}`);
-    await users.new(await generator.newUser());
-    item.end();
-  }
-
-  for (let i = 0; i < item_count; i++) {
-    let item = new execItem(`post_${i}`);
-    await posts.new(await generator.newPost());
-    item.end();
-  }
-
+  await vLoop(item_count, newUserCB);
+  await vLoop(item_count, newPostCB);
   console.log(`Average Execution Time: ${execTimers.itemAVG()}ms`);
   console.log(`Exec Item Count: ${execTimers.length}`);
   console.log(`Total Execution Time: ${execTimers.seconds()}s [${execTimers.sum()}ms]`);
-
   await users.purge();
   await posts.purge();
 };
