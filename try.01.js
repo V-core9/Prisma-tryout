@@ -1,35 +1,26 @@
 const { users, posts } = require('./models');
-var faker = require('faker');
-
+const generator = require('./generator');
 //! Test Configs:
 const item_count = 1000;
 
-
-var generator = {
-  newUser: async () => {
-    return {
-      email: faker.internet.email(),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-      salt: '123$@$' };
-  },
-  newPost: async () => {
-    return {
-      title: faker.lorem.sentence(),
-      content: faker.lorem.paragraphs(),
-      published: false
-    };
-  },
-};
-
 var execTimers = [];
-execTimers.itemAVG = () => {
+
+execTimers.sum = () => {
   var sum = 0;
   execTimers.forEach(item => {
     sum += item.time;
   });
-  return sum / execTimers.length;
+  return sum;
 };
+
+execTimers.itemAVG = () => {
+  return execTimers.sum() / execTimers.length;
+};
+
+execTimers.seconds = () => {
+  return execTimers.sum() / 1000;
+};
+
 class execItem {
   constructor(name) {
     this.txt = name;
@@ -41,7 +32,6 @@ class execItem {
     execTimers.push(this);
   }
 }
-
 
 
 main = async () => {
@@ -60,8 +50,9 @@ main = async () => {
     item.end();
   }
 
-  console.log(execTimers);
-  console.log(`execTimers.itemAVG: ${execTimers.itemAVG()}ms`);
+  console.log(`Average Execution Time: ${execTimers.itemAVG()}ms`);
+  console.log(`Exec Item Count: ${execTimers.length}`);
+  console.log(`Total Execution Time: ${execTimers.seconds()}s [${execTimers.sum()}ms]`);
 
   await users.purge();
   await posts.purge();
