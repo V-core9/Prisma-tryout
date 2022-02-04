@@ -1,58 +1,5 @@
-const { PrismaClient } = require('@prisma/client');
 
-const prisma = new PrismaClient();
-
-users = {
-  new: async (data) => {
-    return await prisma.user.create({ data: data });
-  },
-
-  all: async () => {
-    return await prisma.user.findMany();
-  },
-
-  allExtended: async () => {
-    return await prisma.user.findMany({
-      include: { posts: true },
-    });
-  },
-
-  byId: async (id) => {
-    return await prisma.user.findUnique({
-      where: {
-        id: id
-      }
-    });
-  }
-};
-
-posts = {
-  new: async (data) => {
-    return await prisma.post.create({ data: data });
-  },
-
-  all: async () => {
-    return await prisma.post.findMany();
-  },
-
-  allExtended: async () => {
-    return await prisma.post.findMany({
-      include: { author: true },
-    });
-  },
-
-  byId: async (id) => {
-    return await prisma.post.findUnique({
-      where: {
-        id: id
-      }
-    });
-  },
-
-  purge: async () => {
-    return await prisma.post.deleteMany({});
-  }
-};
+const {users, posts} = require('./models');
 
 async function main() {
 
@@ -75,12 +22,10 @@ async function main() {
   console.time('users.byId(id)');
   console.log(await users.byId(2));
   console.timeEnd('users.byId(id)');
+
+  console.time('posts.purge()');
+  console.log(await posts.purge());
+  console.timeEnd('posts.purge()');
 }
 
-main()
-  .catch((e) => {
-    throw e;
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+main();
