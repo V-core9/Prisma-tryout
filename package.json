@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/V-core9/Prisma-tryout/issues"
   },
-  "homepage": "https://github.com/V-core9/Prisma-tryout#readme"
+  "homepage": "https://github.com/V-core9/Prisma-tryout#readme",
+  "dependencies": {
+    "@prisma/client": "^3.9.1",
+    "express": "^4.17.2"
+  }
 }
