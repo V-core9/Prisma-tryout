@@ -20,5 +20,9 @@
   "dependencies": {
     "@prisma/client": "^3.9.1",
     "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "faker": "^5.5.3",
+    "jest": "^27.4.7"
   }
 }

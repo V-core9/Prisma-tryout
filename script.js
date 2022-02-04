@@ -57,7 +57,7 @@ posts = {
 async function main() {
 
   console.time('posts.new()');
-  console.log(await posts.new({ title: "Hello World", content: "Hello World", published: true, authorId: 1 }));
+  console.log(await posts.new({ title: "Hello World", content: "Hello World", published: true }));
   console.timeEnd('posts.new()');
 
   console.time('users.allExtended()');
