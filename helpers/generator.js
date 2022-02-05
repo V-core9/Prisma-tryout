@@ -6,13 +6,25 @@ module.exports = {
       email: faker.internet.email(),
       password: faker.internet.password(),
       username: faker.internet.userName(),
-      salt: '123$@$' };
+      salt: '123$@$'
+    };
   },
   newPost: async () => {
     return {
       title: faker.lorem.sentence(),
       content: faker.lorem.paragraphs(),
-      published: false
+    };
+  },
+  newPage: async () => {
+    return {
+      title: faker.lorem.sentence(),
+      content: faker.lorem.paragraphs(),
+    };
+  },
+  newDiaryItem: async () => {
+    return {
+      title: faker.lorem.sentence(),
+      content: faker.lorem.paragraphs(),
     };
   },
 };

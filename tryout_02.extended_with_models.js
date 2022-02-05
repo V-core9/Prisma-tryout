@@ -3,38 +3,8 @@ const generator = require('./helpers/generator');
 //! Test Configs:
 const item_count = 1000;
 
-vLoop = async (count, callback) => {
-  for (let i = 0; i < count; i++) {
-    await callback(i);
-  }
-};
-
-var execTimers = [];
-execTimers.sum = () => {
-  var sum = 0;
-  execTimers.forEach(item => {
-    sum += item.time;
-  });
-  return sum;
-};
-execTimers.itemAVG = () => {
-  return execTimers.sum() / execTimers.length;
-};
-execTimers.seconds = () => {
-  return execTimers.sum() / 1000;
-};
-
-class execItem {
-  constructor(name) {
-    this.txt = name;
-    this.start = Date.now();
-  }
-  end() {
-    this.end = Date.now();
-    this.time = this.end - this.start;
-    execTimers.push(this);
-  }
-}
+const vLoop = require('./helpers/v_loop');
+const { execTimers, execItem } = require('./helpers/exec_timers');
 
 newUserCB = async (i) => {
   let item = new execItem(`user_${i}`);
