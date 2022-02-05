@@ -1,7 +1,6 @@
 const { users, posts } = require('./models');
 const generator = require('./helpers/generator');
 //! Test Configs:
-const item_count = 1000;
 
 const loopy = require('./helpers/loopy');
 const { execTimers, execItem } = require('./helpers/exec_timers');
@@ -21,11 +20,12 @@ newPostCB = async (i) => {
 main = async () => {
   await users.purge();
   await posts.purge();
-  await loopy(item_count, newUserCB);
-  await loopy(item_count, newPostCB);
-  console.log(`Average Execution Time: ${execTimers.itemAVG()}ms`);
-  console.log(`Exec Item Count: ${execTimers.length}`);
-  console.log(`Total Execution Time: ${execTimers.seconds()}s [${execTimers.sum()}ms]`);
+
+  await loopy(newUserCB);
+  await loopy(newPostCB);
+
+  execTimers.end();
+
   await users.purge();
   await posts.purge();
 };

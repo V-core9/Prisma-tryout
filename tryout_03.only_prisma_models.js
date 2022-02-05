@@ -4,7 +4,7 @@ const generator = require('./helpers/generator');
 const { execTimers, execItem } = require('./helpers/exec_timers');
 
 //! Test Configs:
-const item_count = 2000;
+const item_count = 1000;
 
 data_purge = async () => {
   await prisma.user.deleteMany({});
@@ -42,9 +42,7 @@ main = async () => {
     diaryItem.end();
   }
 
-  console.log(`Average Execution Time: ${execTimers.itemAVG()}ms`);
-  console.log(`Exec Item Count: ${execTimers.length}`);
-  console.log(`Total Execution Time: ${execTimers.seconds()}s [${execTimers.sum()}ms]`);
+  execTimers.end();
 
   await data_purge();
 };
