@@ -18,4 +18,12 @@ NOTE: Jest looks like making an overhead and using up to 75% more execution time
     No Jest   : ./tryout_02.js
       Total   : 11.506 s
       Per item: 5.753 ms
+
 #
+
+## Test 03 - Only Prisma Models:
+
+    $ node tryout_03.only_prisma_models.js
+    Average Execution Time: 4.29275ms
+    Exec Item Count: 8000
+    Total Execution Time: 34.342s [34342ms]
