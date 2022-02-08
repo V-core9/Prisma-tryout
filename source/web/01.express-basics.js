@@ -36,20 +36,18 @@ setupDemoData = async () => {
 
 
 apiRoot = async (req, res) => {
-  var data = {
-    timestamp: Date.now(),
-    models: v9_models,
-    coreCore: 'Vc9_initPrisma',
-    version: '1.0.0',
-  };
-  res.end(await v9_stringify(data), 'utf-8');
+  return res.end(await v9_stringify({ timestamp: Date.now(), models: v9_models, coreCore: 'Vc9_initPrisma', version: '1.0.0' }), 'utf-8');
+};
+
+apiType = async (req, res) => {
+  return res.end(await v9_stringify(v9_models.indexOf(req.params.type) > -1 ? await prisma[req.params.type].findMany({ take: 5 }) : {}), 'utf-8');
 };
 
 
 app.get('/', async (req, res) => res.end("Hello!"));
 
 app.get('/api', apiRoot);
-app.get('/api/:type', async (req, res) => res.json(v9_models.indexOf(req.params.type) > -1 ? await prisma[req.params.type].findMany({}) : {}));
+app.get('/api/:type', apiType);
 app.get('/api/page/:slug', async (req, res) => res.json(await prisma.page.findUnique({ where: { slug: req.params.slug } }) || {}));
 app.get('/api/post/:slug', async (req, res) => res.json(await prisma.post.findUnique({ where: { slug: req.params.slug } }) || {}));
 app.get('/api/user/:username', async (req, res) => res.json(await prisma.user.findUnique({ where: { username: req.params.username } }) || {}));
