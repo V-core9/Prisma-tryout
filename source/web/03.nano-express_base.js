@@ -30,9 +30,30 @@ app.get('/api', async (req, res) => { return res.json({ timestamp: Date.now(), m
 
 app.get('/api/:type', async (req, res) => { return res.json((v9_models.indexOf(req.params.type) > -1) ? await prisma[req.params.type].findMany({ take: 5 }) : {}); });
 
-app.get('/api/page/:slug', async (req, res) => { return res.json(await prisma.page.findUnique({ where: { slug: req.params.slug } })); });
+page_data = async (slug) => {
+  var data = null;
+  try {
+    data = await prisma.page.findUnique({ where: { slug: slug } });
+  } catch (error) {
+  }
+  return data;
+};
+$_data = async ( type, slug) => {
+  var data = null;
+  try {
+    data = await prisma[type].findUnique({ where: { slug: slug } });
+  } catch (error) {
+  }
+  return data;
+};
 
-app.get('/api/post/:slug', async (req, res) => { return res.json(await prisma.post.findUnique({ where: { slug: req.params.slug } })); });
+app.get('/api/page/:slug', async (req, res) => {
+  return res.send(await $_data('page', req.params.slug));
+});
+
+app.get('/api/post/:slug', async (req, res) => {
+  return res.send(await $_data('post', req.params.slug));
+});
 
 app.listen(port);
 //? This one handles around ~150k req/sec [+-15%]
