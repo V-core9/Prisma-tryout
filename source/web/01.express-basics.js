@@ -8,6 +8,9 @@ const prisma = new PrismaClient();
 const { generator } = require('../../helpers');
 
 var v9_models = Object.keys(prisma._dmmf.modelMap).map(name => name.toLowerCase());
+model_exists = async (model) => {
+  return (v9_models.indexOf(model) > -1);
+};
 
 v9_stringify = async (data) => {
   return JSON.stringify(data, true, 2);
@@ -34,23 +37,63 @@ setupDemoData = async () => {
   }
 };
 
-
 apiRoot = async (req, res) => {
   return res.end(await v9_stringify({ timestamp: Date.now(), models: v9_models, coreCore: 'Vc9_initPrisma', version: '1.0.0' }), 'utf-8');
 };
 
 apiType = async (req, res) => {
-  return res.end(await v9_stringify(v9_models.indexOf(req.params.type) > -1 ? await prisma[req.params.type].findMany({ take: 5 }) : {}), 'utf-8');
+  return res.end(await v9_stringify(await model_exists(req.params.type) ? await prisma[req.params.type].findMany({ take: 5 }) : {}), 'utf-8');
 };
 
+apiTypeBySlug = async (req, res) => {
+  return res.end(await v9_stringify(await model_exists(req.params.type) ? await prisma[req.params.type].findUnique({ where: { slug: req.params.slug } }) : {}), 'utf-8');
+};
 
-app.get('/', async (req, res) => res.end("Hello!"));
+apiPostBySlug = async (req, res) => {
+  return res.json(await prisma.post.findUnique({ where: { slug: req.params.slug } }) || {});
+};
 
-app.get('/api', apiRoot);
-app.get('/api/:type', apiType);
-app.get('/api/page/:slug', async (req, res) => res.json(await prisma.page.findUnique({ where: { slug: req.params.slug } }) || {}));
-app.get('/api/post/:slug', async (req, res) => res.json(await prisma.post.findUnique({ where: { slug: req.params.slug } }) || {}));
-app.get('/api/user/:username', async (req, res) => res.json(await prisma.user.findUnique({ where: { username: req.params.username } }) || {}));
+apiUserByUsername = async (req, res) => res.json(await prisma.user.findUnique({ where: { username: req.params.username } }) || {});
+
+land = async (req, res) => res.end("Hello!");
+
+const v_routes = [
+  {
+    meth: 'get',
+    path: '/',
+    func: land
+  },
+  {
+    meth: 'get',
+    path: '/api',
+    func: apiRoot
+  },
+  {
+    meth: 'get',
+    path: '/api/:type',
+    func: apiType
+  },
+  {
+    meth: 'get',
+    path: '/api/page/:slug',
+    func: apiTypeBySlug
+  },
+  {
+    meth: 'get',
+    path: '/api/post/:slug',
+    func: apiTypeBySlug
+  },
+  {
+    meth: 'get',
+    path: '/api/user/:username',
+    func: apiType
+  }
+];
+
+v_routes.forEach(route => {
+  app[route.meth](route.path, route.func);
+});
+
 
 app.listen(port, async () => {
   await setupDemoData();

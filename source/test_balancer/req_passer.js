@@ -1,18 +1,22 @@
 const http = require('http');
 
-http.get('http://localhost:3000/api', (resp) => {
-  let data = '';
+doRequest = async (url) => new Promise((resolve, reject) => {
+  http.get(url, res => {
+    let data = [];
 
-  // A chunk of data has been received.
-  resp.on('data', (chunk) => {
-    data += chunk;
+    res.on('data', chunk => {
+      data.push(chunk);
+    });
+
+    res.on('end', () => {
+      resolve(JSON.parse(Buffer.concat(data).toString()));
+    });
+  }).on('error', err => {
+    reject(err.message);
   });
+}).catch(err => console.log(err));
 
-  // The whole response has been received. Print out the result.
-  resp.on('end', () => {
-    console.log(JSON.parse(data));
-  });
 
-}).on("error", (err) => {
-  console.log("Error: " + err.message);
-});
+demo_01 = async () => console.log(await doRequest("http://localhost:3000/api"));
+
+demo_01();
