@@ -1,11 +1,11 @@
-const express = require('express');
-const app = express();
-const port = 3000;
+module.exports = (data = {}) => {
+  const express = require('express');
+  const app = express();
 
-const v_routes = require('./routes');
+  var port = data.port || 3000;
+  var routes = data.routes || [];
 
-module.exports = () => {
-  v_routes.forEach(route => {
+  routes.forEach(route => {
     app[route.meth](route.path, route.func);
   });
 

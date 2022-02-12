@@ -28,13 +28,13 @@ apiTypeBySlug = async (req, res) => res.end(await v9_stringify(await model_exist
 
 apiUserByUsername = async (req, res) => res.end(await v9_stringify(await prisma.user.findUnique({ where: { username: req.params.username } }) || {}));
 
-land = async (req, res) => res.end("Hello!");
+homepage = async (req, res) => res.end("Hello!");
 
 const v_routes = [
   {
     meth: 'get',
     path: '/',
-    func: land
+    func: homepage
   },
   {
     meth: 'get',
