@@ -6,7 +6,7 @@ module.exports = (data = {}) => {
   var routes = data.routes || [];
 
   routes.forEach(route => {
-    app[route.meth](route.path, route.func);
+    app[route.meth](route.path, route.exec);
   });
 
   app.listen(port, async () => {

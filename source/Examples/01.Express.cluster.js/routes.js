@@ -4,42 +4,36 @@ module.exports = [
   {
     meth: 'get',
     path: '/',
-    func: app.homepage
+    exec: app.homepage
   },
-
   {
     meth: 'get',
     path: '/:slug',
-    func: api.pageBySlug
+    exec: api.pageBySlug
   },
-
   {
     meth: 'get',
     path: '/api',
-    func: api.root
+    exec: api.root
   },
-
   {
     meth: 'get',
     path: '/api/:type',
-    func: api.type
+    exec: api.type
   },
-
   {
     meth: 'get',
     path: '/api/page/:slug',
-    func: api.pageBySlug
+    exec: api.pageBySlug
   },
-
   {
     meth: 'get',
     path: '/api/post/:slug',
-    func: api.postBySlug
+    exec: api.postBySlug
   },
-
   {
     meth: 'get',
     path: '/api/user/:username',
-    func: api.userByUsername
+    exec: api.userByUsername
   }
 ];
