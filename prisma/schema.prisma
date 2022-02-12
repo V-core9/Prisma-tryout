@@ -35,6 +35,7 @@ model Page {
 
 model Diary {
   id       Int      @id @default(autoincrement())
+  slug     String?  @unique
   title    String?
   content  String   @default("")
   status   String?  @default("draft")
@@ -66,7 +67,7 @@ model Role {
 model User {
   id       Int      @id @default(autoincrement())
   email    String   @unique
-  username String?
+  username String?  @unique
   password String
   salt     String
   updated  DateTime @default(now())
