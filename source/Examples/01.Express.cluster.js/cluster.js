@@ -1,5 +1,6 @@
 module.exports = async (data = {}) => {
-  var maxCpu = data.maxCpu || 0.5;
+  const app = data.app || require("./app");
+  const maxCpu = data.maxCpu || 0.5;
   const totalCPUs = Math.trunc(require("os").cpus().length * maxCpu);
   const cluster = require("cluster");
 
@@ -12,6 +13,6 @@ module.exports = async (data = {}) => {
       cluster.fork();
     });
   } else {
-    require("./core")(data);
+    app(data);
   }
 };
