@@ -16,8 +16,7 @@ getType = async (type) => {
   return await v9_stringify(await model_exists(type) ? await prisma[type].findMany({ take: 5 }) : {});
 };
 getTypeBySlug = async (type, param) => {
-  const isID = !isNaN(param);
-  const filter = isID ? { id: parseInt(param) } : { slug: param };
+  const filter = !isNaN(param) ? { id: parseInt(param) } : { slug: param };
   return await v9_stringify(await model_exists(type) ? await prisma[type].findUnique({ where: filter }) : {});
 };
 
