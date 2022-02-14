@@ -15,23 +15,31 @@ v9_stringify = async (data) => {
 getType = async (type) => {
   return await v9_stringify(await model_exists(type) ? await prisma[type].findMany({ take: 5 }) : {});
 };
-getTypeBySlug = async (type, slug) => {
-  return await v9_stringify(await model_exists(type) ? await prisma[type].findUnique({ where: { slug: slug } }) : {});
+getTypeBySlug = async (type, param) => {
+  const isID = !isNaN(param);
+  const filter = isID ? { id: parseInt(param) } : { slug: param };
+  return await v9_stringify(await model_exists(type) ? await prisma[type].findUnique({ where: filter }) : {});
 };
 
 getUserByUsername = async (username) => {
   return await v9_stringify(await prisma.user.findUnique({ where: { username: username } }));
 };
 
-module.exports = {
-  api: {
-    root: async (req, res) => res.end(await v9_stringify({ timestamp: Date.now(), models: v9_models, coreCore: 'Vc9_initPrisma', version: '1.0.0' })),
-    type: async (req, res) => res.end(await getType(req.params.type)),
-    typeBySlug: async (req, res) => res.end(await getTypeBySlug(req.params.type, req.params.slug)),
-    userByUsername: async (req, res) => res.end(await getUserByUsername(req.params.username)),
-  },
-  app: {
-    homepage: async (req, res) => res.end("Hello!"),
-    pageBySlug: async (req, res) => res.end(await v9_stringify(await prisma.page.findUnique({ where: { slug: req.params.slug } }))),
-  }
+apiRootInfo = async () => {
+  const data = {
+    timestamp: Date.now(),
+    models: v9_models,
+    coreCore: 'Vc9_initPrisma',
+    version: '1.0.0'
+  };
+  return await v9_stringify(data);
+};
+
+module.exports = apiAction = {
+  root: async (req, res) => res.end(await apiRootInfo()),
+  type: async (req, res) => res.end(await getType(req.params.type)),
+  typeBySlug: async (req, res) => res.end(await getTypeBySlug(req.params.type, req.params.slug)),
+  userByUsername: async (req, res) => res.end(await getUserByUsername(req.params.username)),
+  homepage: async (req, res) => res.end("Hello!"),
+  pageBySlug: async (req, res) => res.end(await v9_stringify(await prisma.page.findUnique({ where: { slug: req.params.slug } }))),
 };

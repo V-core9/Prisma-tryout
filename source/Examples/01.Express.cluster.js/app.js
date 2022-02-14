@@ -4,6 +4,7 @@ module.exports = (data = {}) => {
 
   var port = data.port || 3000;
   var routes = data.routes || [];
+  if (typeof routes === 'string') routes = require(routes);
 
   for (let i = 0; i < routes.length; i++) {
     const route = routes[i];

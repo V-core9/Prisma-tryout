@@ -1,39 +1,39 @@
-const { api, app } = require('./actions');
+const apiAction = require('./actions');
 
 module.exports = [
   {
     meth: 'get',
     path: '/',
-    exec: app.homepage
+    exec: apiAction.homepage
   },
 
   {
     meth: 'get',
     path: '/api',
-    exec: api.root
+    exec: apiAction.root
   },
 
   {
     meth: 'get',
     path: '/api/:type',
-    exec: api.type
+    exec: apiAction.type
   },
 
   {
     meth: 'get',
     path: '/api/user/:username',
-    exec: api.userByUsername
+    exec: apiAction.userByUsername
   },
 
   {
     meth: 'get',
     path: '/api/:type/:slug',
-    exec: api.typeBySlug
+    exec: apiAction.typeBySlug
   },
 
   {
     meth: 'get',
     path: '/:slug',
-    exec: app.pageBySlug
+    exec: apiAction.pageBySlug
   },
 ];

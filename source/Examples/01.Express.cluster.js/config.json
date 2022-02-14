@@ -1,0 +1,6 @@
+{
+  "port": 8000,
+  "routes": "./routes",
+  "app": "./core",
+  "maxCpu": 0.25
+}
