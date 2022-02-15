@@ -28,9 +28,6 @@ const favicon = {
 const homepage = {
   "GET": async (req, res) => {
     res.send("Hello, you sent\n" + JSON.stringify(req.parsed.query));
-  },
-  "POST": async (req, res) => {
-    res.send("hello world");
   }
 };
 
