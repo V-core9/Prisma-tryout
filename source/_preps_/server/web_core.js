@@ -45,7 +45,7 @@ core.delete = async (path, callback) => {
   return await addRoute("DELETE", path, callback);
 };
 
-core.run = (port = 3000) => {
+core.run = (port = 8080) => {
   core.listen(port);
   console.log(`[Server]-> Application Started @ http://localhost:${port}/`);
 };

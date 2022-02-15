@@ -3,19 +3,31 @@ const path = require("path");
 
 const page = {
   "GET": async (req, res) => {
-    res.send("Getting PAGES : \n" + JSON.stringify(req.parsed.query));
+    res.send("GET -> PAGE\n" + JSON.stringify(req.parsed.query));
   },
   "POST": async (req, res) => {
-    res.send("hello PAGE");
+    res.send("POST -> PAGE");
+  },
+  "PUT": async (req, res) => {
+    res.send("PUT/UPDATE -> PAGE");
+  },
+  "DELETE": async (req, res) => {
+    res.send("DELETE -> PAGE");
   }
 };
 
 const post = {
   "GET": async (req, res) => {
-    res.send("Loading POSTS : \n" + JSON.stringify(req.parsed.query));
+    res.send("GET -> POST\n" + JSON.stringify(req.parsed.query));
   },
   "POST": async (req, res) => {
-    res.send("hello POST");
+    res.send("POST -> POST");
+  },
+  "PUT": async (req, res) => {
+    res.send("PUT/UPDATE -> POST");
+  },
+  "DELETE": async (req, res) => {
+    res.send("DELETE -> POST");
   }
 };
 
